@@ -55,6 +55,10 @@ export default class BoatDetailTabs extends NavigationMixin(LightningElement) {
   
   // Private
   subscription = null;
+  messageContext = '';
+
+  // Initialize messageContext for Message Service
+  @wire(MessageContext) messageContext;
   
   // Subscribe to the message channel
   subscribeMC() {
@@ -62,14 +66,12 @@ export default class BoatDetailTabs extends NavigationMixin(LightningElement) {
     this.subscription = subscribe(
       this.messageContext,
         BOATMC, (message) => {
-   // Subscribe to the message channel to retrieve the recordID and assign it to boatId.
           this.boatId = message.recordId
         },
         { scope: APPLICATION_SCOPE }
     );   
   }
   
-  @wire(MessageContext) messageContext;
   // Calls subscribeMC()
   connectedCallback() { 
     if (this.subscription || this.recordId) {
