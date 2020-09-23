@@ -1,5 +1,5 @@
 <template>
-    <template if:false={wiredRecord.data}>
+    <template if:false={wiredRecord}>
       <!-- lightning card for the label when wiredRecord has no data goes here  -->
       <lightning-card>
         <span class="slds-align_absolute-center no-boat-height">{label.labelPleaseSelectABoat}</span>
@@ -8,7 +8,7 @@
     <!-- TAB1 -->
     <lightning-tabset variant="scoped">
       <lightning-tab label={label.labelDetails}>
-          <template if:true={wiredRecord.data}>
+          <template if:true={wiredRecord}>
             <!-- lightning card for the content when wiredRecord has data goes here  -->
             <lightning-card title={boatName} icon-name={detailsTabIconName}>
               <lightning-button label={label.labelFullDetails} slot="actions" onclick={navigateToRecordViewPage} class="slds-m-left_x-small"></lightning-button>
