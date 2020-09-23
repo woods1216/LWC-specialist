@@ -33,13 +33,14 @@ export default class BoatDetailTabs extends NavigationMixin(LightningElement) {
   };
   
   @wire(getRecord, { recordId: '$boatId', fields: BOAT_FIELDS })
-  wiredBoatRecord( results ) {
-    this.wiredRecord = results;
-    this.error = undefined;
+  wiredBoatRecord( { error, data} ) {
+    if (data) {
+      this.wiredRecord = data;
+      this.error = undefined;
+    } else if (error) {
     // Error handling
-    if (results.error) {
-      this.error = results.error;
-      this.wiredRecord = undefined;
+        this.error = error;
+        this.wiredRecord = undefined;
     }
   }
 
