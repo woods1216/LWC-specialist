@@ -17,6 +17,8 @@ export default class BoatSearchResults extends LightningElement {
   boatTypeId = '';
   @track boats;
   isLoading = false;
+  error;
+  @track draftValues = []
   
   columns = [
     { label: 'Name', fieldName: 'Name', type: 'text', editable: 'true'  },
@@ -31,10 +33,11 @@ export default class BoatSearchResults extends LightningElement {
 
   // wired getBoats method
   @wire(getBoats, {boatTypeId: '$boatTypeId'})  
-  wiredBoats(result) { 
-    this.boats = result;
-    if (result.error) {
-        this.error = result.error;
+  wiredBoats( results ) {
+      this.boats = results;
+      this.error = undefined;
+    if (results.error) {
+        this.error = results.error;
         this.boats = undefined;
     }
     this.isLoading = false;
@@ -69,7 +72,7 @@ export default class BoatSearchResults extends LightningElement {
   // Publishes the selected boat Id on the BoatMC.
   sendMessageService(boatId) { 
     // explicitly pass boatId to the parameter recordId
-    const recordId = boatId;
+    const recordId = { recordId: boatId };
     publish(this.messageContext, BOATMC, recordId);
   }
   

@@ -7,7 +7,8 @@
         <!-- Loop through the list of similar boats -->
       
         <template if:true={relatedBoats}>
-            <lightning-layout>
+          <div class="slds-scrollable_y">
+            <lightning-layout horizontal-align="center" multiple-rows>
               <!-- template looping through each boat -->
               <template for:each={relatedBoats} for:item="boat">
                   <!-- Responsive lightning-layout-item -->
@@ -17,6 +18,7 @@
                   </lightning-layout-item>
               </template>
             </lightning-layout>
+          </div>
         </template>
       
       </lightning-layout>

@@ -33,12 +33,13 @@ export default class BoatDetailTabs extends NavigationMixin(LightningElement) {
   };
   
   @wire(getRecord, { recordId: '$boatId', fields: BOAT_FIELDS })
-  wiredRecord({ error, data }) {
+  wiredBoatRecord( results ) {
+    this.wiredRecord = results;
+    this.error = undefined;
     // Error handling
-    if (data) {
-      this.error = undefined;
-    } else if (error) {
-      this.error = error;
+    if (results.error) {
+      this.error = results.error;
+      this.wiredRecord = undefined;
     }
   }
 
@@ -50,7 +51,7 @@ export default class BoatDetailTabs extends NavigationMixin(LightningElement) {
   
   // Utilize getFieldValue to extract the boat name from the record wire
   get boatName() { 
-    return getFieldValue(this.Boat__c.data, BOAT_NAME_FIELD);
+    return getFieldValue(this.wiredRecord.data, BOAT_NAME_FIELD);
   }
   
   // Private

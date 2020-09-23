@@ -7,7 +7,7 @@
           <lightning-layout-item size="8" padding="horizontal-small">
             <div class="slds-form-element">
               <!-- review subject field code using nameField -->
-              <lightning-input-field field-name="Name" value="Name"></lightning-input-field>
+              <lightning-input-field field-name="Name" value={nameField}></lightning-input-field>
             </div>
           </lightning-layout-item>
           <lightning-layout-item size="4" padding="horizontal-small">
@@ -15,14 +15,14 @@
               <label class="slds-form-element__label" for="record-name">Rating</label>
               <div class="slds-form-element__control">
                 <!-- add five star rating component -->
-                <c-five-star-rating read-only=false value="Rating__c" onratingchange={handleRatingChanged}></c-five-star-rating>
+                <c-five-star-rating read-only=false value={rating} onratingchange={handleRatingChanged}></c-five-star-rating>
               </div>
             </div>
           </lightning-layout-item>
           <lightning-layout-item padding="horizontal-small">
               <!-- review comment field code using commentField -->
               <div class="slds-form-element">
-                <lightning-input-field field-name="Comment__c" value="Comment__c"></lightning-input-field>
+                <lightning-input-field field-name="Comment__c" value={commentField}></lightning-input-field>
               </div>
           </lightning-layout-item>
         </lightning-layout>
