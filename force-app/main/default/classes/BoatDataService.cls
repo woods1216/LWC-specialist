@@ -102,4 +102,19 @@ public with sharing class BoatDataService {
         return similarBoats;
     }
 
+    @AuraEnabled
+    public static string updateBoats(Object data) {
+        List<Boat__c> boatsForUpdate = (List<Boat__c>) JSON.deserialize(
+            JSON.serialize(data),
+            List<Boat__c>.class
+        );
+        try {
+            update boatsForUpdate;
+            return 'Success: claim lines updated successfully';
+        }
+        catch (Exception e) {
+            return 'The following exception has occurred: ' + e.getMessage();
+        }
+    }
+
 }
