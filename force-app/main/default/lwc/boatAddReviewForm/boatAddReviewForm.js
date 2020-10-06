@@ -46,9 +46,6 @@ export default class BoatAddReviewForm extends LightningElement {
       event.preventDefault();       // stop the form from submitting
       const fields = event.detail.fields;
       fields.Boat__c = this.boatId;
-      fields.Name = this.nameField;
-      fields.Comment__c = this.commentField;
-      fields.Rating__c = this.rating;
       this.template.querySelector('lightning-record-edit-form').submit(fields);
      }
     
