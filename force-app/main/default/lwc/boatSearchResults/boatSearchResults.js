@@ -92,10 +92,11 @@ export default class BoatSearchResults extends LightningElement {
     publish(this.messageContext, BOATMC, recordId);
   }
 
+  /* ASYNC APEX UPDATE DOES NOT WORK
   // This method must save the changes in the Boat Editor
   // Show a toast message with the title
   // clear lightning-datatable draft values
-  handleSave() {
+  async handleSave() {
     this.notifyLoading(true);
     const updatedFields = event.detail.draftValues;
 
@@ -103,14 +104,14 @@ export default class BoatSearchResults extends LightningElement {
     const notifyChangeIds = updatedFields.map(row => { return { "recordId": row.Id } });
 
     // Pass edited fields to the updateContacts Apex controller
-     updateBoats({data: updatedFields})
+    await updateBoats({data: updatedFields})
       .then(result => {
              console.log(JSON.stringify("Apex update result: "+ result));
              this.dispatchEvent(
                  new ShowToastEvent({
-                     title: 'Success',
-                     message: 'Contact updated',
-                     variant: 'success'
+                  title: SUCCESS_TITLE,
+                  message: 'Boats updated (with APEX)',
+                  variant: SUCCESS_VARIANT
                  })
              );
      
@@ -127,14 +128,48 @@ export default class BoatSearchResults extends LightningElement {
         }).catch(error => {
             this.dispatchEvent(
                  new ShowToastEvent({
-                     title: 'Error updating or refreshing records',
-                     message: error.body.message,
-                     variant: 'error'
+                  title: ERROR_TITLE,
+                  message: error.body.message,
+                  variant: ERROR_VARIANT
                  })
-             );
-             this.notifyLoading(false);
+            );
+            this.notifyLoading(false);
          });
   }
+  */
+  // Works TESTED
+  handleSave(event) {
+    this.notifyLoading(true);
+    const recordInputs =  event.detail.draftValues.slice().map(draft => {
+      const fields = Object.assign({}, draft);
+      return { fields };
+    });
+
+    const promises = recordInputs.map(recordInput => updateRecord(recordInput));
+    Promise.all(promises).then(boats => {
+      this.dispatchEvent(
+          new ShowToastEvent({
+              title: SUCCESS_TITLE,
+              message: 'Boats updated',
+              variant: SUCCESS_VARIANT
+          })
+      );
+       // Clear all draft values
+       this.draftValues = [];
+
+       // Display fresh data in the datatable
+       return refreshApex(this.boats);
+    }).catch(error => {
+      // Handle error
+      new ShowToastEvent({
+        title: ERROR_TITLE,
+        message: error.body.message,
+        variant: ERROR_VARIANT
+      })
+      this.notifyLoading(false)
+    });
+  }
+
   // Check the current value of isLoading before dispatching the doneloading or loading custom event
   notifyLoading(isLoading) {
     if (isLoading) {
